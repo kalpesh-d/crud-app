@@ -22,20 +22,31 @@ export function usePostsManager(apiUrl: string) {
   const addPost = async (newPost: Omit<Post, "id">) => {
     try {
       const response = await axios.post<Post>(apiUrl, newPost);
-      setPosts([response.data, ...posts]);
+      const addedPost = {
+        ...response.data,
+        id: Date.now(),
+      };
+      setPosts([addedPost, ...posts]);
+      return addedPost;
     } catch (err) {
       setError("Failed to add post");
+      throw err;
     }
   };
 
   const updatePost = async (updatedPost: Post) => {
     try {
-      await axios.put(`${apiUrl}/${updatedPost.id}`, updatedPost);
+      const existingPost = posts.find((post) => post.id === updatedPost.id);
+      if (!existingPost) {
+        throw new Error("Post not found");
+      }
+
       setPosts(
         posts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
       );
     } catch (err) {
       setError("Failed to update post");
+      throw err;
     }
   };
 
