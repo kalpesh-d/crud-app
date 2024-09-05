@@ -11,6 +11,10 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "input-bg": "var(--input-bg)",
+        "button-bg": "var(--button-bg)",
+        "button-hover": "var(--button-hover)",
+        content: "var(--content-bg)",
       },
     },
   },
